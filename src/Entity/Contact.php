@@ -22,6 +22,13 @@ class Contact {
     /**
      * @var string|null
      * @Assert\NotBlank()
+     * @Assert\Length(min=10)
+     */
+    private $subject;
+
+    /**
+     * @var string|null
+     * @Assert\NotBlank()
      * @Assert\Regex(
      *  pattern="/[0-9]{10}/"
      * )
@@ -41,11 +48,6 @@ class Contact {
      * @Assert\Length(min=10)
      */
     private $message;
-
-    /**
-     * @var Property|null
-     */
-    private $property;
 
     /**
      * @return null|string
@@ -138,20 +140,20 @@ class Contact {
     }
 
     /**
-     * @return Property|null
+     * @return null|string
      */
-    public function getProperty(): ?Property
+    public function getSubject(): ?string
     {
-        return $this->property;
+        return $this->subject;
     }
 
     /**
-     * @param Property|null $property
+     * @param null|string $subject
      * @return Contact
      */
-    public function setProperty(?Property $property): Contact
+    public function setSubject(?string $subject): Contact
     {
-        $this->property = $property;
+        $this->subject = $subject;
         return $this;
     }
 
