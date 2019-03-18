@@ -48,9 +48,15 @@ class Language
      */
     private $online;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Verbs", mappedBy="Language")
+     */
+    private $verbs;
+
     public function __construct()
     {
         $this->modes = new ArrayCollection();
+        $this->verbs = new ArrayCollection();
     }
 
 
@@ -152,6 +158,37 @@ class Language
     public function setOnline(bool $online): self
     {
         $this->online = $online;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Verbs[]
+     */
+    public function getVerbs(): Collection
+    {
+        return $this->verbs;
+    }
+
+    public function addVerb(Verbs $verb): self
+    {
+        if (!$this->verbs->contains($verb)) {
+            $this->verbs[] = $verb;
+            $verb->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVerb(Verbs $verb): self
+    {
+        if ($this->verbs->contains($verb)) {
+            $this->verbs->removeElement($verb);
+            // set the owning side to null (unless already changed)
+            if ($verb->getLanguage() === $this) {
+                $verb->setLanguage(null);
+            }
+        }
 
         return $this;
     }

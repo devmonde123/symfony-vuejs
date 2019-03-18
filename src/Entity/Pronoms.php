@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ModeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PronomsRepository")
  */
-class Mode
+class Pronoms
 {
     /**
      * @ORM\Id()
@@ -24,35 +24,22 @@ class Mode
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $orders;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Temps", inversedBy="modes")
+     * @ORM\Column(type="integer")
      */
-    private $temps;
+    private $orders;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language", inversedBy="modes")
-     */
-    private $langues;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Conjugaisons", mappedBy="Mode")
+     * @ORM\OneToMany(targetEntity="App\Entity\Conjugaisons", mappedBy="Pronoms")
      */
     private $conjugaisons;
 
-   
-
     public function __construct()
     {
-        $this->temps = new ArrayCollection();
         $this->conjugaisons = new ArrayCollection();
     }
 
@@ -73,18 +60,6 @@ class Mode
         return $this;
     }
 
-    public function getOrders(): ?int
-    {
-        return $this->orders;
-    }
-
-    public function setOrders(int $orders): self
-    {
-        $this->orders = $orders;
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -97,57 +72,14 @@ class Mode
         return $this;
     }
 
-    public function getLangue(): ?Language
+    public function getOrders(): ?int
     {
-        return $this->Langue;
+        return $this->orders;
     }
 
-    public function setLangue(?Language $Langue): self
+    public function setOrders(int $orders): self
     {
-        $this->Langue = $Langue;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return Collection|Temps[]
-     */
-    public function getTemps(): Collection
-    {
-        return $this->temps;
-    }
-
-    public function addTemp(Temps $temp): self
-    {
-        if (!$this->temps->contains($temp)) {
-            $this->temps[] = $temp;
-        }
-
-        return $this;
-    }
-
-    public function removeTemp(Temps $temp): self
-    {
-        if ($this->temps->contains($temp)) {
-            $this->temps->removeElement($temp);
-        }
-
-        return $this;
-    }
-
-    public function getLangues(): ?Language
-    {
-        return $this->langues;
-    }
-
-    public function setLangues(?Language $langues): self
-    {
-        $this->langues = $langues;
+        $this->orders = $orders;
 
         return $this;
     }
@@ -164,7 +96,7 @@ class Mode
     {
         if (!$this->conjugaisons->contains($conjugaison)) {
             $this->conjugaisons[] = $conjugaison;
-            $conjugaison->setMode($this);
+            $conjugaison->setPronoms($this);
         }
 
         return $this;
@@ -175,13 +107,16 @@ class Mode
         if ($this->conjugaisons->contains($conjugaison)) {
             $this->conjugaisons->removeElement($conjugaison);
             // set the owning side to null (unless already changed)
-            if ($conjugaison->getMode() === $this) {
-                $conjugaison->setMode(null);
+            if ($conjugaison->getPronoms() === $this) {
+                $conjugaison->setPronoms(null);
             }
         }
 
         return $this;
     }
 
-  
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
