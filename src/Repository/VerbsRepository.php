@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Verbs;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,22 +21,22 @@ class VerbsRepository extends ServiceEntityRepository
         parent::__construct($registry, Verbs::class);
     }
 
-    // /**
-    //  * @return Verbs[] Returns an array of Verbs objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Verbs[] Returns an array of Verbs objects
+      */
+    
+    public function findAllQuery(): Query
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
+            #->andWhere('v.exampleField = :val')
+            #->setParameter('val', $value)
+            #->orderBy('v.id', 'ASC')
+            #->setMaxResults(10)
             ->getQuery()
-            ->getResult()
+            #->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Verbs
